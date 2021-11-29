@@ -5,7 +5,7 @@ import { environment } from "../environments/environments"
 
 const FilteredTrailer = (props) => {
     const keyword = props.match.params.keyword
-    const filteredTrailersUrl = environment.FilteredTrailers
+    const filteredTrailersUrl = environment.FilteredTrailersUrl
     const [error, setError] = useState('')
     const [filteredTrailers, setFilteredTrailers] = useState([])
 

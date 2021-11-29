@@ -10,4 +10,7 @@ const TrailerDetail = () => {
     )
 }
 
+
+// https://api.imovies.cc/api/v1/movies/premiere-day?page=1&per_page=1
+
 export default TrailerDetail
