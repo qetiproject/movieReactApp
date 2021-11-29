@@ -1,6 +1,12 @@
+import { Container } from "react-bootstrap"
+
 const About =() => {
     return(
-        <>About</>
+        <>
+            <Container>
+               <p>React-ის საჩვენებელი პროექტი, სადაც გამოყენებული არის ყველა ძირითადი მანიპულაცია, რაც კი შეიძლება დაგვჭირდეს</p>
+            </Container>
+        </>
     )
 }
 

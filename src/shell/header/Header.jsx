@@ -5,8 +5,17 @@ import logo from "../../assets/images/logo.svg"
 import { Switch, Route } from "react-router";
 import { Home, About } from '../../components/index'
 import { NotFound } from '../index'
+import TrailerDetail from "../../components/TrailerDetail";
+import { useState } from "react";
+import FilteredTrailer from "../../components/FilteredTrailer";
 
 const Header = () => {
+    const [input, setInput] = useState('')
+
+    const inputHandler = (value) => {
+        setInput(value) 
+    }
+
     return(
         <>
             <Navbar bg="light" expand="lg">
@@ -30,8 +39,12 @@ const Header = () => {
                         placeholder="Search"
                         className="me-2"
                         aria-label="Search"
+                        value={input}
+                        onChange = {(e) => inputHandler(e.target.value)}
                         />
-                        <Button variant="outline-success">Search</Button>
+                        <Link to={`/${input}`}>
+                            <Button variant="outline-success">Search</Button>
+                        </Link>
                     </Form>
                     </Navbar.Collapse>
                 </Container>
@@ -40,8 +53,13 @@ const Header = () => {
             <Switch>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/about" component={About} />
+                <Route exact path="/title/:title" component={TrailerDetail} />
+                <Route exact path="/:keyword" 
+                    component={FilteredTrailer}
+                ></Route>
                 <Route exact path="*" component={NotFound} />
             </Switch>
+
         </>
     )
 }
