@@ -17,7 +17,6 @@ const Trailer = (props) => {
     
     return(
         <>
-        {console.log(props.trailer.imdbUrl, originalName)}
             <Col md={4} lg={3} sm={6}>
                 <article>
                     <img className="img" src={cover[510]} alt={originalName} />

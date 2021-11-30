@@ -1,11 +1,13 @@
-import { Col, Container, Row } from "react-bootstrap"
-import { environment } from '../environments/environments'
+import { Container, Row } from "react-bootstrap"
 import Trailer from "./Trailer"
-import axios from "axios"
 import { useEffect, useState } from "react"
 import './Trailer.scss'
+import FilteredTrailer from "./FilteredTrailer"
+import axios from "axios"
+import { environment } from "../environments/environments"
 
-const Home = () => {
+const Home = (props) => {
+    const keyword = props.keyword
     const trailersDataUrl = environment.TrailersDataUrl
     const [trailers, setTrailers] = useState([])
     const [error, setError] = useState('')
@@ -30,10 +32,15 @@ const Home = () => {
     return(
         <>
             <Container>
-                <section className="mt-3 mb-3">
-                    <h3 className="mt-2 mb-2">ტრეილერები</h3>
-                    <Row className="d-flex">
-                        
+                {
+                    keyword.length > 0 && <FilteredTrailer keyword={keyword}/>
+
+                } 
+                {
+                    keyword.length === 0 && <>
+                    <section className="mt-3 mb-3">
+                        <h3 className="mt-2 mb-2">Trailers</h3>
+                        <Row className="d-flex">
                             {
                                 trailers.map((trailer, index) => {
                                     return <Trailer 
@@ -41,11 +48,14 @@ const Home = () => {
                                     />
                                 })
                             }
-                    </Row>
-                </section>
-                <div>
-                    {displeyErrors()}
-                </div>
+                        </Row>
+                    </section>
+                    <div>
+                        {displeyErrors()}
+                    </div>
+                </>
+                }
+                
             </Container>
         </>
     )
