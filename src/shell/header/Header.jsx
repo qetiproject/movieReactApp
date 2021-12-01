@@ -9,8 +9,11 @@ import TrailerDetail from "../../components/TrailerDetail";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { environment } from "../../environments/environments";
 
 const Header = () => {
+    const weatherApi = environment.CurrentWeatherApi
+    const appId = '6d217162faf15d9295107ee24f2ec1b8'
     const [input, setInput] = useState('')
     const [error, setError] = useState('')
     const dispatch = useDispatch()
@@ -22,19 +25,16 @@ const Header = () => {
         history.push("/")
     }
 
-    //weather's api უნდა იყო, უბრალოდ ვერ ვიპოვე
-    const getTrailers = async () => {
+    const getCurrentWeather = async (city) => {
         try{
-            const response = await axios.get('https://www.googleapis.com/books/v1/volumes?q=sharlok')
-            localStorage.setItem('currentWeather', response.data?.items[0].id)
-
+            const response = await axios.get(`${weatherApi}/weather?q=${city}&appid=${appId}`)
+            localStorage.setItem('currentWeather', JSON.stringify(response.data))
             dispatch({
                 type: 'SUCCESS',
-                data: response.data?.items[0].id
+                data: Array({'key': 'value'})
             })
-
         }catch(e) {
-            // setError(e.message)
+            setError(e.message)
             dispatch({
                 type: 'FAIL',
             })
@@ -44,8 +44,8 @@ const Header = () => {
     }
 
     useEffect(() => {
-        getTrailers()
-        // const currentWeather = localStorage.getItem('currentWeather')
+        getCurrentWeather('tbilisi')
+        const currentWeather = localStorage.getItem('currentWeather')
     }, [])
 
     return(
@@ -65,7 +65,9 @@ const Header = () => {
                         <Link to="/">Homepage</Link>
                         <Link to="/about">About</Link>
                     </Nav>
-                    <span>{weather}</span>
+                    {/* {
+                        Object.keys(weather).length > 0 &&  <span>{Math.round(weather.main.temp - 273.15) + '°C'}</span>
+                    } */}
                     <Form className="d-flex">
                         <FormControl
                             type="search"
