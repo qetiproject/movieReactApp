@@ -7,6 +7,7 @@ import axios from "axios"
 import { environment } from "../environments/environments"
 
 const Home = (props) => {
+    const filtered = props.filtered
     const keyword = props.keyword
     const trailersDataUrl = environment.TrailersDataUrl
     const [trailers, setTrailers] = useState([])
@@ -33,11 +34,11 @@ const Home = (props) => {
         <>
             <Container>
                 {
-                    keyword.length > 0 && <FilteredTrailer keyword={keyword}/>
+                    filtered.length > 0 && <FilteredTrailer filtered={filtered}/>
 
                 } 
                 {
-                    keyword.length === 0 && <>
+                    filtered.length === 0 && <>
                     <section className="mt-3 mb-3">
                         <h3 className="mt-2 mb-2">Trailers</h3>
                         <Row className="d-flex">

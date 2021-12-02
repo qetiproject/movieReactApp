@@ -1,4 +1,4 @@
-import { Container, Form, FormControl, Nav, Navbar } from "react-bootstrap"
+import { Container, Form, FormControl, Nav, Navbar, Button } from "react-bootstrap"
 import { Link } from "react-router-dom";
 import "./Header.scss"
 import logo from "../../assets/images/logo.svg"
@@ -12,17 +12,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { environment } from "../../environments/environments";
 
 const Header = () => {
+    const filteredTrailersUrl = environment.FilteredTrailersUrl
     const weatherApi = environment.CurrentWeatherApi
     const appId = '6d217162faf15d9295107ee24f2ec1b8'
     const [input, setInput] = useState('')
     const [error, setError] = useState('')
+    const [filteredTrailers, setFilteredTrailers] = useState([])
     const dispatch = useDispatch()
     const weather = useSelector(state => state.weather)
     const history = useHistory()
 
     const inputHandler = (value) => {
         setInput(value) ;
-        history.push("/")
+    }
+
+    const search = () => {
+        searchTrailers(input)
     }
 
     const getCurrentWeather = async (city) => {
@@ -40,6 +45,16 @@ const Header = () => {
             })
 
             localStorage.setItem('currentWeather', '')
+        }
+    }
+
+    const searchTrailers = async (keyword) => {
+        try{
+            const response = await axios.get(`${filteredTrailersUrl}/${keyword}`)
+            setFilteredTrailers(response.data.pagination.data)
+        }catch(e) {
+            setError('')
+            setError(e.message)
         }
     }
 
@@ -77,13 +92,14 @@ const Header = () => {
                             value={input}
                             onChange = {(e) => inputHandler(e.target.value)}
                         />
+                        <Button variant="success" onClick={() => search()}>ძებნა</Button>{' '}
                     </Form>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
             <Switch>
                 <Route exact path="/" 
-                    render={() => <Home keyword ={input}/>}
+                    render={() => <Home keyword ={input} filtered={filteredTrailers} />}
                 />
                 <Route exact path="/about" component={About} />
                 <Route exact path="/title/:id" component={TrailerDetail} />

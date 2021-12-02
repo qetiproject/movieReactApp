@@ -5,27 +5,28 @@ import { environment } from "../environments/environments"
 
 const FilteredTrailer = (props) => {
     const keyword = props.keyword
-    const filteredTrailersUrl = environment.FilteredTrailersUrl
+    const imdbUrl = environment.ImdbUrl
+    // const filteredTrailersUrl = environment.FilteredTrailersUrl
     const [error, setError] = useState('')
-    const [filteredTrailers, setFilteredTrailers] = useState([])
+    // const [filteredTrailers, setFilteredTrailers] = useState([])
 
     const displeyErrors = () => {
         return <span>{error}</span>
     }
     
-    const searchTrailers = async (keyword) => {
-        try{
-            const response = await axios.get(`${filteredTrailersUrl}?keywords=${keyword}&filters%5Btype%5D=movie%2Ccast&page=1&per_page=10`)
-            setFilteredTrailers(response.data.data)
-        }catch(e) {
-            setError('')
-            setError(e.message)
-        }
-    }
+    // const searchTrailers = async (keyword) => {
+    //     try{
+    //         const response = await axios.get(`${filteredTrailersUrl}/${keyword}`)
+    //         setFilteredTrailers(response.data.pagination.data)
+    //     }catch(e) {
+    //         setError('')
+    //         setError(e.message)
+    //     }
+    // }
 
     useEffect(() => {
-        searchTrailers(keyword)
-    }, [keyword])
+        // searchTrailers(keyword)
+    }, [])
 
     return(
         <>
@@ -33,14 +34,16 @@ const FilteredTrailer = (props) => {
                 <Row className="d-flex">
                     <Col md={4} lg={3} sm={6}>
                         {
-                            filteredTrailers.map((f) => {
-                                console.log(f.languages?.data[0])
+                            props.filtered.map((f) => {
+                                // console.log(f, "f")
                                 return <article>
-                                            <img src={f.posters?.data[240] || f.poster} alt={f.secondaryName} /> 
-                                            <span>IMDB {f.rating.imdb.score}</span>
-                                            <span>{f.languages.data[2]?.code}</span>
+                                            <img src={f.poster || f.backdrop} alt={f.name} /> 
+                                             <span>IMDB {f.tmdb_vote_average}</span>
+                                             <span>{imdbUrl}/{f.imdb_id}</span>
+                                             {console.log(imdbUrl, "imdb")}
+                                             {console.log(f.imdb_id, "id")}
+                                            <span>{f.langs}</span>
                                             <span>{f.year}</span>
-                                            <p>{f.primaryDescription}</p>
                                         </article>
                             })
                         }
