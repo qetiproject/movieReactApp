@@ -7,15 +7,11 @@ import { Switch, Route } from "react-router";
 import { Home, About } from '../../components/index'
 import { NotFound } from '../index'
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { environment } from "../../environments/environments";
+import { currentWeather }  from '../../services/weatherService'
+import { searchMovieByKeyword } from '../../services/movieService'
 
 const Header = () => {
-    const filteredDataUrl = environment.FilteredDataUrl
-    const weatherApi = environment.CurrentWeatherApi
-    const appId = '6d217162faf15d9295107ee24f2ec1b8'
-
     const [input, setInput] = useState('')
     const [error, setError] = useState('')
     const [filteredData, setFilteredData] = useState([])
@@ -24,13 +20,15 @@ const Header = () => {
 
     const getCurrentWeather = async (city) => {
         try{
-            const response = await axios.get(`${weatherApi}/weather?q=${city}&appid=${appId}`)
+            const response = await currentWeather(city)
+            console.log(response, "res")
             localStorage.setItem('currentWeather', response.data)
             dispatch({
                 type: 'SUCCESS',
                 data: response.data
             })
         }catch(e) {
+            setError('')
             setError(e.message)
             dispatch({
                 type: 'FAIL',
@@ -40,9 +38,9 @@ const Header = () => {
         }
     }
 
-    const searchData = async (keyword) => {
+    const searchMovie = async (keyword) => {
         try{
-            const response = await axios.get(`${filteredDataUrl}/${keyword}`)
+            const response = await searchMovieByKeyword(keyword)
             setFilteredData(response.data.pagination.data)
         }catch(e) {
             setError('')
@@ -55,7 +53,7 @@ const Header = () => {
     }
 
     const search = () => {
-        searchData(input)
+        searchMovie(input)
     }
 
     useEffect(() => {
