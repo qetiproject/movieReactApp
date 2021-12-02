@@ -1,7 +1,7 @@
-const weatherReducer = (state = initialSstate, action) => {
+const weatherReducer = (state = {}, action) => {
     switch(action.type) {
         case "SUCCESS":
-            return state + action.data
+            return action.data
         case "FAIL":
             return {}
         default:
@@ -9,5 +9,4 @@ const weatherReducer = (state = initialSstate, action) => {
     }
 }
 
-const initialSstate = {}
 export default weatherReducer

@@ -1,13 +1,18 @@
-.logo {
-    width: 100px
-}
+$navColor: #009c7c;
+$distance: 5px;
+$navHoverColor: #009c7c;
+$navdistance: 0 20px;
 
 a {
-    color: #009c7c;
-    padding-right: 5px;
+    color: $navColor;
+    padding-right: $distance;
     text-decoration: none;
 }
 
 a:hover {
-    color: #009c7c;
+    color: $navHoverColor;
+}
+
+.nav {
+    margin: $navdistance
 }
