@@ -6,3 +6,9 @@ export const searchMovieByKeyword = (keyword) => {
 
     return axios.get(`${filteredDataUrl}/${keyword}`)
 }
+
+export const getTrailersData = (page, count) => {
+    const trailersDataUrl = environment.TrailersDataUrl
+
+    return axios.get(`${trailersDataUrl}?page=${page}&per_page=${count}`)
+}

@@ -4,7 +4,7 @@ import "./Header.scss"
 import "../../App.css"
 import logo from "../../assets/images/logo.svg"
 import { Switch, Route } from "react-router";
-import { Home, About } from '../../components/index'
+import { Home, About, FilteredMovie } from '../../components/index'
 import { NotFound } from '../index'
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -79,9 +79,9 @@ const Header = () => {
                                 <Link to="/about">About</Link>
                             </Nav>
                         </Col>
-                        <Col lg={1}>
+                        <Col lg={2} >
                             {
-                                Object.keys(weather).length > 0 &&  <span>{Math.round(weather.main.temp - 273.15) + '°C'} {weather.name}</span>
+                                Object.keys(weather).length > 0 &&  <span className="temp">{Math.round(weather.main.temp - 273.15) + '°C'} {weather.name}</span>
                             }    
                         </Col>
                         <Col >
@@ -94,7 +94,9 @@ const Header = () => {
                                     value={input}
                                     onChange = {(e) => inputHandler(e.target.value)}
                                 />
-                                <Button variant="success" onClick={() => search()}>Search</Button>{' '}
+                                <Link to="/filter-movies">
+                                    <Button variant="success" onClick={() => search()}>Search</Button>{' '}
+                                </Link>
                             </Form>
                         </Col>
                     </Navbar.Collapse>
@@ -104,8 +106,9 @@ const Header = () => {
                 <div className="error">{error}</div>
             </Container>
             <Switch>
-                <Route exact path="/" 
-                    render={() => <Home keyword ={input} filtered={filteredData} />}
+                <Route exact path="/" component={Home} />
+                <Route exact path="/filter-movies" 
+                    render={() => <FilteredMovie filtered={filteredData} />} 
                 />
                 <Route exact path="/about" component={About} />
                 <Route exact path="*" component={NotFound} />

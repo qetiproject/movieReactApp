@@ -2,14 +2,9 @@ import { Container, Row } from "react-bootstrap"
 import Trailer from "./Trailer"
 import { useEffect, useState } from "react"
 import './Trailer.scss'
-import FilteredTrailer from "./FilteredTrailer"
-import axios from "axios"
-import { environment } from "../environments/environments"
+import { getTrailersData } from '../services/movieService'
 
-const Home = (props) => {
-    const filtered = props.filtered
-    const keyword = props.keyword
-    const trailersDataUrl = environment.TrailersDataUrl
+const Home = () => {
     const [trailers, setTrailers] = useState([])
     const [error, setError] = useState('')
 
@@ -19,9 +14,10 @@ const Home = (props) => {
 
     const getTrailers = async (page, count) => {
         try{
-            const response = await axios.get(`${trailersDataUrl}?page=${page}&per_page=${count}`)
+            const response = await getTrailersData(page, count)
             setTrailers(response.data.data)
         }catch(e) {
+            setError('')
             setError(e.message)
         }
     }
@@ -33,30 +29,21 @@ const Home = (props) => {
     return(
         <>
             <Container>
-                {
-                    filtered.length > 0 && <FilteredTrailer filtered={filtered}/>
-
-                } 
-                {
-                    filtered.length === 0 && <>
-                    <section className="mt-3 mb-3">
-                        <h3 className="mt-2 mb-2">Trailers</h3>
-                        <Row className="d-flex">
-                            {
-                                trailers.map((trailer, index) => {
-                                    return <Trailer 
-                                        trailer = {trailer} key={index}
-                                    />
-                                })
-                            }
-                        </Row>
-                    </section>
-                    <div>
-                        {displeyErrors()}
-                    </div>
-                </>
-                }
-                
+                <section className="mt-3 mb-3">
+                    <h3 className="mt-2 mb-2">Trailers</h3>
+                    <Row className="d-flex">
+                        {
+                            trailers.map((trailer, index) => {
+                                return <Trailer 
+                                    trailer = {trailer} key={index}
+                                />
+                            })
+                        }
+                    </Row>
+                </section>
+                <div>
+                    {displeyErrors()}
+                </div>
             </Container>
         </>
     )
