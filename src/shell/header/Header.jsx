@@ -21,7 +21,6 @@ const Header = () => {
     const getCurrentWeather = async (city) => {
         try{
             const response = await currentWeather(city)
-            console.log(response, "res")
             localStorage.setItem('currentWeather', response.data)
             dispatch({
                 type: 'SUCCESS',

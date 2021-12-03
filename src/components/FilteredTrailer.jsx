@@ -34,13 +34,10 @@ const FilteredTrailer = (props) => {
                     <Col md={4} lg={3} sm={6}>
                         {
                             props.filtered.map((f) => {
-                                // console.log(f, "f")
                                 return <article>
                                             <img src={f.poster || f.backdrop} alt={f.name} /> 
                                              <span>IMDB {f.tmdb_vote_average}</span>
                                              <span>{imdbUrl}/{f.imdb_id}</span>
-                                             {console.log(imdbUrl, "imdb")}
-                                             {console.log(f.imdb_id, "id")}
                                             <span>{f.langs}</span>
                                             <span>{f.year}</span>
                                         </article>
